@@ -16,3 +16,7 @@ print(df.info())
 print("----------------")
 print(df.describe())
 
+print("----------------")
+desc_obj = df.describe(include='object')
+print(desc_obj.to_string())
+
