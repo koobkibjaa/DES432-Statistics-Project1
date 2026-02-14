@@ -1,7 +1,0 @@
-import pandas as pd
-df=pd.read_csv('hotel_bookings.csv')
-#print(df.to_string())
-
-
-#print head of Dataframe for skimming and scanning
-print(df.head())
