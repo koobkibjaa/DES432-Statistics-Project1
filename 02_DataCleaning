@@ -1,0 +1,25 @@
+import pandas as pd
+df=pd.read_csv('hotel_bookings.csv')
+
+#Discover Duplicate Values
+
+# Number of exact duplicate rows
+print("duplicated Value were found ",df.duplicated().sum())
+print(df.shape)
+print("----------------")
+# Drop duplicate rows
+df.drop_duplicates(inplace=True)
+print("duplicated Value were found ",df.duplicated().sum())
+print(df.shape)
+
+#Check for missing values
+
+print(df.isnull().sum())
+print("----------------")
+# Replace missing 'children' with median
+children_median = df['children'].median()
+df['children'] = df['children'].fillna(children_median)
+# Replace missing 'country', 'agent', 'company' with 'Unknown'
+categorical_cols = ['country', 'agent', 'company']
+df[categorical_cols] = df[categorical_cols].fillna('Unknown')
+print(df.isnull().sum())
