@@ -1,4 +1,63 @@
 import pandas as pd 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 df = pd.read_csv("cleaned_hotel_bookings.csv")
 #check the shape of the dataset
 print("Dataset shape:", df.shape)
+
+
+#Distribution of Room Prices (Average Daily Rate)
+print("")
+print("--------------------------")
+print("Distribution of Room Prices (Average Daily Rate):")
+plt.figure(figsize=(8,5))
+plt.hist(df['adr'], bins=50, color='blue', edgecolor='black')
+plt.title('Distribution of Average Daily Rate (ADR)')
+plt.xlabel('ADR')
+plt.ylabel('Frequency')
+plt.show()
+
+#Seasonal Variation in Price
+print("")
+print("--------------------------")
+print("Seasonal Variation in Price:")
+monthly_adr = df.groupby('arrival_date_month')['adr'].mean()
+
+plt.figure(figsize=(10,5))
+monthly_adr.plot(marker='o')
+plt.title("Average ADR by Month")
+plt.xlabel("Month")
+plt.ylabel("Average ADR")
+plt.xticks(rotation=45)
+plt.show()
+
+
+#Monthly Cancellations
+print("")
+print("--------------------------")
+print("Monthly Cancellations:")
+monthly_cancel = df.groupby(
+    ['arrival_date_month', 'is_canceled']
+).size().unstack()
+
+monthly_cancel.plot(kind='bar', figsize=(10,5))
+plt.title("Cancellations by Month")
+plt.xlabel("Month")
+plt.ylabel("Number of Bookings")
+plt.xticks(rotation=45)
+plt.legend(["Not Canceled", "Canceled"])
+plt.show()
+
+#Length of Stay vs Cancellation
+print("")
+print("--------------------------")
+print("Length of Stay vs Cancellation:")
+df['total_stay'] = df['stays_in_week_nights'] + df['stays_in_weekend_nights']
+
+plt.figure(figsize=(6,4))
+sns.boxplot(x='is_canceled', y='total_stay', data=df)
+plt.title("Length of Stay by Cancellation Status")
+plt.xlabel("Cancellation (0 = No, 1 = Yes)")
+plt.ylabel("Total Length of Stay (nights)")
+plt.show()
