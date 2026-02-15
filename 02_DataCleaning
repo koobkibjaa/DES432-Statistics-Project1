@@ -23,3 +23,42 @@ df['children'] = df['children'].fillna(children_median)
 categorical_cols = ['country', 'agent', 'company']
 df[categorical_cols] = df[categorical_cols].fillna('Unknown')
 print(df.isnull().sum())
+
+#Check outliers
+numerical_cols = df.select_dtypes(include=['int64', 'float64']).columns
+
+# Calculate IQR and identify outliers for each numerical column which is lower than the lower bound
+print("--------------------------")
+print("Outliers lower than the lower bound:")
+for col in numerical_cols:
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+    lower = Q1 - 1.5 * IQR
+    upper = Q3 + 1.5 * IQR
+    
+    outliers = df[(df[col] < lower)]
+    if outliers.shape[0] > 0:
+        print(f"{col}: {outliers.shape[0]} outliers")
+
+
+
+# Calculate IQR and identify outliers for each numerical column which is higher than the upper bound
+print("--------------------------")
+print("Outliers higher than the upper bound:")
+for col in numerical_cols:
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+    lower = Q1 - 1.5 * IQR
+    upper = Q3 + 1.5 * IQR
+    
+    outliers = df[(df[col]  > upper)]
+    if outliers.shape[0] > 0:
+        print(f"{col}: {outliers.shape[0]} outliers")
+
+print("--------------------------")
+for col in numerical_cols:
+    print(f"\n{col}")
+    print("Min:", df[col].min())
+    print("Max:", df[col].max())
