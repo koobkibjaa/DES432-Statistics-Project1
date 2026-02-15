@@ -62,3 +62,40 @@ for col in numerical_cols:
     print(f"\n{col}")
     print("Min:", df[col].min())
     print("Max:", df[col].max())
+
+#Remove negative values in 'adr' column
+print("--------------------------")
+df = df[df['adr'] >= 0]
+print("After removing negative values in 'adr' column:")
+print(df['adr'].describe())
+
+#Remove adult =0 and children >0
+print("--------------------------")
+print("Before removing rows with adults=0 and children>0:")
+print(df.shape)
+df = df[~((df['adults'] == 0) & (df['children'] > 0))]
+print("After removing rows with adults=0 and children>0:")          
+print(df[(df['adults'] == 0) & (df['children'] > 0)].shape)
+
+#Remove total of guests =0
+print("--------------------------")
+print("Before removing rows with total guests=0:")
+print(df.shape)
+df = df[~((df['adults'] + df['children'] + df['babies']) == 0)]
+print("After removing rows with total guests=0:")
+print(df[(df['adults'] + df['children'] + df['babies']) == 0].shape)
+
+#Remove Total of nights =0 and not cancelled
+print("--------------------------")
+print("Before removing rows with total nights=0 and not cancelled:")
+print(df.shape) 
+df = df[~((df['stays_in_weekend_nights'] + df['stays_in_week_nights'] == 0) & (df['is_canceled'] == 0))]
+print("After removing rows with total nights=0 and not cancelled:")     
+print(df[(df['stays_in_weekend_nights'] + df['stays_in_week_nights'] == 0) & (df['is_canceled'] == 0)].shape)   
+    
+
+#Final check for duplicates, missing values, and outliers
+print("--------------------------")
+print("Final dataset shape:", df.shape)
+print(df.isnull().sum())
+df.to_csv("cleaned_hotel_bookings.csv", index=False)
