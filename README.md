@@ -6,7 +6,7 @@ cleaned_hotel_bookings.csv — cleaned version of the data for analysis
 01_DataViewing.py — view and understand the data
 02_DataCleaning — files to clean and prepare the data
 03_EDA — exploratory data analysis (examples of patterns and charts)
-04_DescriptiveStatics — calculations of basic statistics
+04_DescriptiveStatics — calculations of basic statistics 
 
 📌What This Project Does
 View Data : 
